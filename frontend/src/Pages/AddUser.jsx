@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
-import addUserIcon from '../assets/addUserIcon.svg';
-import errorImg from '../assets/errorImg.svg';
+import addUserIcon from '../icons/addUserIcon.svg';
+import errorImg from '../icons/errorImg.svg';
 import UserServices from '../services/UserServices';
 import { useForm } from 'react-hook-form';
 

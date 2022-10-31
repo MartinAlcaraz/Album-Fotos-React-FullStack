@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //const URI = '/api/users';                //  si estamos en un servidor para produccion se deja asi   = '/api/users'
-const URI = 'http://localhost:3000/api/users';     //  si estamos en desarrollo en el localhost
+const URI = 'http://localhost:3000/api/users';
 
 const UserServices = {};
 
@@ -18,7 +18,7 @@ UserServices.getOneUser = async (userId) => {   // retorna un solo usuario
 }
 
 UserServices.postUser = async (newUser) => {
-    const res = await axios.post('http://localhost:3000/api/users', newUser );
+    const res = await axios.post(URI, newUser );
     return res;
     
 }
@@ -33,8 +33,6 @@ UserServices.saveActiveUser = async (_id) => {
     const res = await axios.put(`${URI}/${_id}`, { id: _id });
     return res.data.message;
 }
-
-
 
 
 export default UserServices;

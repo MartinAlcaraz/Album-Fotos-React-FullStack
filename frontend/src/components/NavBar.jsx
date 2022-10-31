@@ -1,5 +1,5 @@
 
-import icono from "../assets/react.svg"
+import icono from "../icons/react.svg"
 import { Link } from "react-router-dom";
 
 const NavBar = () => {

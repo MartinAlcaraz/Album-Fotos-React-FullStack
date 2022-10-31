@@ -40,9 +40,8 @@ picturesCtrl.postPicture = async (req, res) => {
 
                     newUserPicture.save(function (err, data) {
                         if (err) {
-                            res.status(500).send({ message: "Error al guardar la imagen" })
+                            res.status(500).send({ updated: false, message: "Error al guardar la imagen" })
                         } else {
-                            console.log(data);
                             res.json({ updated: true });
                         }
                     })
@@ -54,7 +53,7 @@ picturesCtrl.postPicture = async (req, res) => {
                         { '$push': { images: img } }    // agreaga una imagen al array images []
                     ).exec(function (err, result) {
                         if (err) {
-                            res.status(500).send({ message: "" })
+                            res.status(500).send({ message: "", updated: false })
                         } else {
                             res.json({ updated: true })
                         }
@@ -68,61 +67,36 @@ picturesCtrl.postPicture = async (req, res) => {
     }
 }
 
-
-picturesCtrl.putPicture = async (req, res) => {
-    const { title, content, author } = req.body;
-
+picturesCtrl.deletePictures = async (req, res) => {
     try {
-        const exist = await Note.findById(req.params.id);
+        const exist = await UserPictures.findById(req.params.id);
+        // si existe el registro del usuario se eliminan todas las fotos del usuario
         if (exist) {
-            const updated = await Note.findByIdAndUpdate(req.params.id, {
-                title,
-                content
-            });
-            if (updated) {
-                res.json({ message: "Updated note" })
-            } else {
-                res.json({ message: "Could not update note" })
-            }
-
-        } else {
-            res.json({ message: "The note doesnt exist." })
-        }
-
-    } catch (error) {
-        res.json({ message: "Error, could not update note" })
-    }
-}
-
-picturesCtrl.deletePicture = async (req, res) => {
-    try {
-        const exist = await Note.findById(req.params.id);
-        if (exist) {
-            const deleted = await Note.findOneAndDelete(req.params.id)
+            const deleted = await UserPictures.findOneAndDelete(req.params.id)
             if (deleted) {
-                res.json({ message: "Deleted note" });
+                res.json({ message: "Deleted user pictures", ok: true });
             }
         } else {
-            res.json({ message: "The note doesnt exist" });
+            res.json({ message: "The user pictures doesnt exist", ok: false });
         }
     } catch (error) {
-        res.json({ message: "Could not delete note" });
+        res.json({ message: "Could not delete user pictures",  ok: false });
     }
 }
 
-picturesCtrl.getOnePicture = async (req, res) => {   // busca una sola imagen
-    try {
-        const note = await UserPictures.findById(req.params.id);
-        if (note) {
-            res.json({ note })
-        } else {
-            res.json({ message: "The note does not exist." })
-        }
+// picturesCtrl.getOnePicture = async (req, res) => {   // busca una sola imagen
+//     try {
+//         const note = await UserPictures.findById(req.params.id);
+//         if (note) {
+//             res.json({ note })
+//         } else {
+//             res.json({ message: "The note does not exist." })
+//         }
 
-    } catch (err) {
-        res.json({ message: "Could not get note" });
-    }
-}
+//     } catch (err) {
+//         res.json({ message: "Could not get note" });
+//     }
+// }
 
 
 export default picturesCtrl;

@@ -1,11 +1,9 @@
-import iconImage from '../assets/imageIcon.svg'
-import errorImg from '../assets/errorImg.svg'
+import iconImage from '../icons/imageIcon.svg'
 import { useParams, useNavigate } from 'react-router-dom'
-import { createRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Loading from '../components/Loading'
 import { useForm } from 'react-hook-form'
 import UserServices from '../services/UserServices.js'
-import PicturesServices from '../services/PicturesServices.js'
 import pictureServices from '../services/PicturesServices.js'
 
 const AddPhotos = () => {
@@ -18,7 +16,7 @@ const AddPhotos = () => {
     const [selectedImg, setSelectedImg] = useState(iconImage);  // foto subida por el usuario
     const [userInfo, setUserInfo] = useState(null);
     const [loadingImg, setLoadingImg] = useState(false);
-
+    const buttonRef = useRef();
 
     useEffect(() => {   // se obtienen los datos del usuario seleccionado para subir fotos
         async function getUserInfo() {
@@ -54,6 +52,7 @@ const AddPhotos = () => {
 
     async function agregarFoto(data, e) {
         e.preventDefault();
+        buttonRef.current.disabled = true;
         const newPictureOfUser = { userId: params.id, img: selectedImg }
         const response = await pictureServices.postPicture(newPictureOfUser);
                 
@@ -87,7 +86,7 @@ const AddPhotos = () => {
                             onChange: (value) => cargarImagen(value.target.files[0])
                         })} />
 
-                    <input type="submit" value="Agregar foto al Album" className='button-primary bg-blue-700 text-base' />
+                    <input type="submit" ref={buttonRef} value="Agregar foto al Album" className='button-primary bg-blue-700 text-base' />
 
                     <p className="h-4 text-sm text-rose-500 text-center">{errors?.inputFile ? errors.inputFile.message : ""}</p>
 

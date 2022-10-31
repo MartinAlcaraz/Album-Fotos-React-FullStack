@@ -1,4 +1,4 @@
-import addIcon from '../assets/addIcon.svg'
+import addIcon from '../icons/AddIcon.svg'
 import { Link } from 'react-router-dom'
 
 const AddPhotoButton = ({user}) => {

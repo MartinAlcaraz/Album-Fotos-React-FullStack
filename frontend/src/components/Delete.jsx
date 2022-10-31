@@ -1,4 +1,4 @@
-import deleteIcon from '../assets/deleteIcon.svg';
+import deleteIcon from '../icons/deleteIcon.svg';
 import ModalDelete from './ModalDelete';
 import { useState } from 'react';
 

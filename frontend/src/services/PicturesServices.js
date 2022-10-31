@@ -11,7 +11,6 @@ pictureServices.postPicture = async ( newPictureOfUser ) => {
 }
 
 pictureServices.getPictures = async (userId) => {   // retorna un arreglo de las imagenes de un usuario
-
     const response = await axios.get(`${URI}/${userId}`);
     return response;
 }
@@ -22,10 +21,9 @@ pictureServices.getPictures = async (userId) => {   // retorna un arreglo de las
 //     return user;
 //}
 
-// pictureServices.deletePicture = async (pictureId) => {
-//     const res = await axios.delete(`${URI}/${pictureId}`);
-//     const data = res.data;
-//     return data;
-// }
+pictureServices.deletePictures = async (userId) => {
+    const res = await axios.delete(`${URI}/${userId}`);
+    return res;
+}
 
 export default pictureServices;

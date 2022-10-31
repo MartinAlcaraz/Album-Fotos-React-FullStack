@@ -25,17 +25,18 @@ const Main = () => {
             }
         }
     }
-    
-    async function deleteUser(id) {
+
+    async function deleteUser(userId) {
         setLoading(true);
-        const deleted = await UserServices.deleteUser(id);
-        if (deleted) {
+        const deleted = await UserServices.deleteUser(userId);
+        if (deleted.ok) {
+            await pictureServices.deletePictures(userId);
+            setUserPics([]);
             const users = await UserServices.getUsers();
             setDataUsers(users);
-            setLoading(false);
-            setUserPics([]);
-            alert('borrar imagenes!')
             setUserActive(null);
+        } else {
+            alert('No se pudo borrar el usuario.');
         }
         setLoading(false);
     }
@@ -57,19 +58,15 @@ const Main = () => {
         const getPics = async () => {
             if (userActive) {
                 let pictures = await pictureServices.getPictures(userActive._id); // se obtienen las imagenes del usuario activo
-                console.log('pictures', pictures);
                 if (pictures) {
-                    setUserPics(pictures.data.images);    
-                    setLoading(false);
+                    setUserPics(pictures.data.images);
                 }
             }
-            else {
-                setLoading(false);
-            }
+            setLoading(false);
         }
+        setLoading(true);
         getPics();
     }, [userActive]);
-
 
     return (
         <main className='flex flex-row justify-between m-2 gap-2'>

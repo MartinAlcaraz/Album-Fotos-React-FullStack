@@ -36,17 +36,14 @@ usersCtrl.postUser = async (req, res) => {
 
             if (saved != undefined || saved != null) {
                 res.json({ message: "User Saved.", saved: true })
-                console.log('saved')
-            }else{
+            } else {
                 res.json({ message: "User Not Saved.", saved: false })
-                console.log('not saved')
             }
         } else {
             res.json({ message: "userName and image are required.", saved: false })
-            console.log('not saved name img required')
         }
     } catch (err) {
-        res.json({ message: "Could not save the user.",  ok: false })
+        res.json({ message: "Could not save the user.", ok: false })
         console.log('could not save')
     }
 }
@@ -54,11 +51,14 @@ usersCtrl.postUser = async (req, res) => {
 usersCtrl.deleteUser = async (req, res) => {
     try {
         const deleted = await User.findByIdAndDelete(req.params.id);
+
         if (deleted) {
-            res.json({ message: "User deleted" })
+            res.json({ message: "User deleted", ok: true })
+        } else {
+            res.json({ message: "Could not delete user because does'nt exist", ok: false })
         }
     } catch (err) {
-        res.json({ message: "Could not delete user" })
+        res.json({ message: "Error. Could not delete user", ok: false })
     }
 }
 
@@ -66,8 +66,10 @@ usersCtrl.setActiveUser = async (req, res) => {
     try {
         // se desactiva el unico usuario activo
         await User.findOneAndUpdate({ active: true }, { active: false });
-        
+
         // se activa un usuario con el id especificado
+        console.log('req.params.id ', req.params.id);
+        
         const updated = await User.findByIdAndUpdate(req.params.id, { active: true });
         if (updated) {
             res.json({ message: "User updated" })

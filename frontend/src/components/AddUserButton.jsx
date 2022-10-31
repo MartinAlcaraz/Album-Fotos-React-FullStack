@@ -1,4 +1,4 @@
-import addUserIcon from '../assets/userIcon.svg'
+import addUserIcon from '../icons/userIcon.svg'
 import { NavLink } from 'react-router-dom'
 
 const AddUserButton = () => {
