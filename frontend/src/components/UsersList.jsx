@@ -1,8 +1,8 @@
 import User from './User';
 
-const UsersList = ({ users, cambiarEstado, deleteUser }) => {
+const UsersList = ({ users = [], cambiarEstado, deleteUser }) => {
 
-    if (users.length == 0) {
+    if ( users.length == 0 ) {
         //console.log('No existen usuarios.')
         return <p className='text-white text-center'>No existen usuarios</p>
     }

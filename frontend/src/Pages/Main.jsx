@@ -21,7 +21,12 @@ const Main = () => {
             const users = await UserServices.getUsers();
             if (users) {
                 setDataUsers(users);
-                setUserActive(users.find((u) => u.active == true));
+                // si existen usuarios se busca el activo
+                if (users) {
+                    setUserActive(users.find((u) => u.active == true));
+                } else {
+                    setUserActive(null);
+                }
             }
         }
     }
@@ -46,8 +51,13 @@ const Main = () => {
         async function fetchData() {
             const users = await UserServices.getUsers();
             setDataUsers(users);
-            // se carga el usuario activo
-            setUserActive(users.find((u) => u.active == true));
+            
+            // si existen usuarios se busca el activo
+            if (users) {
+                setUserActive(users.find((u) => u.active == true));
+            } else {
+                setUserActive(null);
+            }
         }
         fetchData();
     }, []);
