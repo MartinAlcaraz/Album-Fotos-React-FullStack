@@ -1,4 +1,33 @@
 import User from "../models/User.js";
+import path from 'path'
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// async function uploadPreset() {
+//     try {
+//         let res = await cloudinary.api.update_upload_preset(
+//             {
+//                 name: "user_profile_photo",
+//                 folder: "Album-Fotos",
+//                 transformation: {
+//                     width: 300,
+//                     height: 300
+//                 }
+//             });
+//         //console.log("Response upload preset: ", res);
+//     } catch (error) {
+//         console.log("Error on upload preset in Cloudinary")
+//     }
+// }
+// uploadPreset();
+
 const usersCtrl = {};
 
 usersCtrl.getUsers = async (req, res) => {
@@ -24,13 +53,25 @@ usersCtrl.getOneUser = async (req, res) => {
 };
 
 usersCtrl.postUser = async (req, res) => {
-    try {
-        const { userName, img } = await req.body;
 
-        if (userName && img) {
+    try {
+        const { userName } = await req.body;
+        const image = await req.file;
+        //console.log('nombre de usuario: ', userName);
+        if (userName && image) {
+            //subir la imagen a cloudinary
+            let cloudResult = await cloudinary.uploader.upload(
+                image.path,     // direccion de la imagen subida y guardada en /public/uploads por multer
+                {
+                    public_id: image.filename,
+                    upload_preset: "user_profile_photo"
+                }
+            );
+
             const newUser = new User({
                 userName,
-                img
+                imageUrl: cloudResult.url,
+                public_id: cloudResult.public_id
             })
             const saved = await newUser.save();
 
@@ -44,15 +85,17 @@ usersCtrl.postUser = async (req, res) => {
         }
     } catch (err) {
         res.json({ message: "Could not save the user.", ok: false })
-        console.log('could not save')
+        console.log('Error. Could not save')
     }
 }
 
 usersCtrl.deleteUser = async (req, res) => {
     try {
-        const deleted = await User.findByIdAndDelete(req.params.id);
+        const result = await User.findByIdAndDelete(req.params.id);
 
-        if (deleted) {
+        const deleted = await cloudinary.uploader.destroy(result.public_id);
+
+        if (deleted.result == 'ok') {
             res.json({ message: "User deleted", ok: true })
         } else {
             res.json({ message: "Could not delete user because does'nt exist", ok: false })
@@ -69,7 +112,7 @@ usersCtrl.setActiveUser = async (req, res) => {
 
         // se activa un usuario con el id especificado
         console.log('req.params.id ', req.params.id);
-        
+
         const updated = await User.findByIdAndUpdate(req.params.id, { active: true });
         if (updated) {
             res.json({ message: "User updated" })

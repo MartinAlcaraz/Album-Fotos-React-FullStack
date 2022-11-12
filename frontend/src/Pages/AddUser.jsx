@@ -17,9 +17,13 @@ const AddUser = () => {
 
 
     const onsubmit = async (data, e) => {
+        //const newUser = { userName: data.nombre, image: data.selectedFile[0] };         
+        const formData = new FormData()
+        formData.append('userName', data.nombre);
+        formData.append('image', data.selectedFile[0]);
 
-        const newUser = { userName: data.nombre, img: selectedImage };
-        const res = await UserServices.postUser(newUser);
+        const res = await UserServices.postUser(formData);
+
         if (res.data.saved) {
             navigate("/");
         } else {
@@ -52,8 +56,8 @@ const AddUser = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onsubmit)}
-            className="p-8 m-2  flex flex-col-reverse gap-4 items-center sm:flex-row rounded-md bg-primary bg-blue-700/40" action="">
+        <form onSubmit={handleSubmit(onsubmit)} action=""
+            className="p-8 m-2  flex flex-col-reverse gap-4 items-center sm:flex-row rounded-md bg-primary bg-blue-700/40">
             <div className="flex flex-col basis-1/2">
 
                 <input type='text' name="nombre" className="p-4 m-2 rounded-md" placeholder="Nombre de usuario"
@@ -73,7 +77,7 @@ const AddUser = () => {
             <div className="flex flex-col basis-1/2 w-full">
                 <div className="relative h-[50vh] sm:w-[50vw] ">
                     <div className='h-full w-full absolute m-auto'>
-                        {loadingImg ? <Loading /> : (errors.selectedFile? <img src={errorImg} className=" h-40 w-40 m-auto mt-[10%]"/>: <img src={selectedImage} className='object-contain w-full h-full'/>)}
+                        {loadingImg ? <Loading /> : (errors.selectedFile ? <img src={errorImg} className=" h-40 w-40 m-auto mt-[10%]" /> : <img src={selectedImage} className='object-contain w-full h-full' />)}
                     </div>
 
                     <input type='file' name="img" id="selectedFile" className="w-full h-full p-4 basis-1/2 absolute top-0 left-0 opacity-0 cursor-pointer"
@@ -89,7 +93,7 @@ const AddUser = () => {
                     />
                 </div>
                 {
-                    <div className='text-sm h-4 text-rose-500 text-center'>{errors.selectedFile?errors.selectedFile.message:''}</div>
+                    <div className='text-sm h-4 text-rose-500 text-center'>{errors.selectedFile ? errors.selectedFile.message : ''}</div>
                 }
                 <button className="button-primary" onClick={addImage}>Agregar imagen de perfil</button>
             </div>

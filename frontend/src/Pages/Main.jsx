@@ -12,10 +12,12 @@ const Main = () => {
     const [dataUsers, setDataUsers] = useState([]);
     const [userActive, setUserActive] = useState(null);
     const [userPics, setUserPics] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    const [loadingPics, setLoadingPics] = useState(true);
+
 
     async function cambiarEstado(_id) {
-        setLoading(true);
+        setLoadingPics(true);
         const saved = await UserServices.saveActiveUser(_id);
         if (saved) {
             const users = await UserServices.getUsers();
@@ -32,7 +34,7 @@ const Main = () => {
     }
 
     async function deleteUser(userId) {
-        setLoading(true);
+        setLoadingPics(true);
         const deleted = await UserServices.deleteUser(userId);
         if (deleted.ok) {
             await pictureServices.deletePictures(userId);
@@ -43,7 +45,7 @@ const Main = () => {
         } else {
             alert('No se pudo borrar el usuario.');
         }
-        setLoading(false);
+        setLoadingPics(false);
     }
 
     // 1° se piden los datos de los usuarios
@@ -51,13 +53,14 @@ const Main = () => {
         async function fetchData() {
             const users = await UserServices.getUsers();
             setDataUsers(users);
-            
+
             // si existen usuarios se busca el activo
             if (users) {
                 setUserActive(users.find((u) => u.active == true));
             } else {
                 setUserActive(null);
             }
+            setLoadingUsers(false);
         }
         fetchData();
     }, []);
@@ -72,9 +75,9 @@ const Main = () => {
                     setUserPics(pictures.data.images);
                 }
             }
-            setLoading(false);
+            setLoadingPics(false);
         }
-        setLoading(true);
+        setLoadingPics(true);
         getPics();
     }, [userActive]);
 
@@ -83,7 +86,9 @@ const Main = () => {
 
             <aside className='border-primary bg-secondary basis-1/4 min-h-[80vh]'>
                 <AddUserButton />
-                <UsersList users={dataUsers} cambiarEstado={cambiarEstado} deleteUser={deleteUser} />
+                {
+                    loadingUsers ? <Loading /> : <UsersList users={dataUsers} cambiarEstado={cambiarEstado} deleteUser={deleteUser} />
+                }
             </aside>
 
             <article className='border-primary bg-secondary basis-3/4'>
@@ -92,7 +97,7 @@ const Main = () => {
                     userActive ? <AddPhotoButton user={userActive} /> : <></>
                 }
                 {
-                    loading ? <Loading /> : <PictureList userPictures={userPics} />
+                    loadingPics ? <Loading /> : <PictureList userPictures={userPics} />
                 }
             </article>
         </main>
