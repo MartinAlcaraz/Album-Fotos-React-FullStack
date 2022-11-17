@@ -2,6 +2,7 @@ import iconImage from '../icons/imageIcon.svg'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRef, useEffect, useState } from 'react'
 import Loading from '../components/Loading'
+import ModalLoading from '../components/ModalLoading'
 import { useForm } from 'react-hook-form'
 import UserServices from '../services/UserServices.js'
 import pictureServices from '../services/PicturesServices.js'
@@ -17,6 +18,8 @@ const AddPhotos = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [loadingImg, setLoadingImg] = useState(false);
     const buttonRef = useRef();
+    const [showLoading, setShowLoading] = useState(false);
+
 
     useEffect(() => {   // se obtienen los datos del usuario seleccionado para subir fotos
         async function getUserInfo() {
@@ -53,18 +56,29 @@ const AddPhotos = () => {
     async function agregarFoto(data, e) {
         e.preventDefault();
         buttonRef.current.disabled = true;
-        const newPictureOfUser = { userId: params.id, img: selectedImg }
-        const response = await pictureServices.postPicture(newPictureOfUser);
+
+        let formData = new FormData();
+        formData.append('userId', params.id);
+        formData.append('image', data.inputFile[0]);
+
+        setShowLoading(true);
+        const response = await pictureServices.postPicture(formData);
                 
         if (response.data.updated == true) {
+            setShowLoading(false);
             navigate("/");
         }else{
+            setShowLoading(false);
             navigate("/404");
         }
     }
 
     return (
         <div className='mx-2 my-2'>
+            {
+                showLoading? <ModalLoading /> : <></>
+            }
+
             <h2 className='px-4 mb-1 bg-secondary border-primary font-semibold text-center'>Agregar foto de <strong>{userInfo?.userName}</strong> <img src={userInfo?.img} className="h-20 inline" /></h2>
             <form onSubmit={handleSubmit(agregarFoto)} className='h-[65vh] p-4 bg-secondary border-primary flex flex-row-reverse'>
                 <div className='basis-2/3'>

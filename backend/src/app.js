@@ -46,14 +46,16 @@ const storage = multer.diskStorage({
 });
 
 app.use(multer({storage}).single('image')); // single() para indicar uploads de a una sola imagen
-                                            // image es el input tipo file del html || La propiedad image del formData
+                                            // image es el input tipo file del html || La propiedad image del formData o el name del input
 
 
 
 
 //routes
 app.use('/api/pictures', routerPictures);
+
 app.use('/api/users', routerUsers);
+
 
 export default app;
 

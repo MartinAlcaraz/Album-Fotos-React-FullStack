@@ -10,6 +10,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+
 // async function uploadPreset() {
 //     try {
 //         let res = await cloudinary.api.update_upload_preset(
@@ -93,9 +94,9 @@ usersCtrl.deleteUser = async (req, res) => {
     try {
         const result = await User.findByIdAndDelete(req.params.id);
 
-        const deleted = await cloudinary.uploader.destroy(result.public_id);
+        cloudinary.uploader.destroy(result.public_id); // pulblic_id es el id de la img de cloudinary
 
-        if (deleted.result == 'ok') {
+        if (result) {
             res.json({ message: "User deleted", ok: true })
         } else {
             res.json({ message: "Could not delete user because does'nt exist", ok: false })
@@ -111,7 +112,6 @@ usersCtrl.setActiveUser = async (req, res) => {
         await User.findOneAndUpdate({ active: true }, { active: false });
 
         // se activa un usuario con el id especificado
-        console.log('req.params.id ', req.params.id);
 
         const updated = await User.findByIdAndUpdate(req.params.id, { active: true });
         if (updated) {

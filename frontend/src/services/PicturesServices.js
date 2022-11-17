@@ -22,7 +22,14 @@ pictureServices.getPictures = async (userId) => {   // retorna un arreglo de las
 //     return user;
 //}
 
-pictureServices.deletePictures = async (userId) => {
+pictureServices.deleteOnePicture = async (userId, img_id) => {
+
+    const res = await axios.patch(`${URI}/${userId}`, {data: { img_id : img_id }} );
+    return res;
+}
+
+pictureServices.deleteAllPictures = async (userId) => {
+    
     const res = await axios.delete(`${URI}/${userId}`);
     return res;
 }

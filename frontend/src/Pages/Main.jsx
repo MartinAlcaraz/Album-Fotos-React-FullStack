@@ -37,13 +37,26 @@ const Main = () => {
         setLoadingPics(true);
         const deleted = await UserServices.deleteUser(userId);
         if (deleted.ok) {
-            await pictureServices.deletePictures(userId);
+            await pictureServices.deleteAllPictures(userId);
             setUserPics([]);
             const users = await UserServices.getUsers();
             setDataUsers(users);
             setUserActive(null);
         } else {
             alert('No se pudo borrar el usuario.');
+        }
+        setLoadingPics(false);
+    }
+
+    async function deletePicture(public_id) {
+
+        setLoadingPics(true);
+        const deleted = await pictureServices.deleteOnePicture(userActive._id, public_id);
+
+        if (deleted.data.ok) {
+            getPics();
+        } else {
+            alert('No se pudo borrar la imagen.');
         }
         setLoadingPics(false);
     }
@@ -65,20 +78,20 @@ const Main = () => {
         fetchData();
     }, []);
 
+    const getPics = async () => {
+        if (userActive) {
+            let pictures = await pictureServices.getPictures(userActive._id); // se obtienen las imagenes del usuario activo
+            if (pictures) {
+                setUserPics(pictures.data.images);
+            }
+        }
+    }
 
     // actualiza las imagenes. cuando se actualiza el usuario activo se obtienen las url de las imagenes
     useEffect(() => {
-        const getPics = async () => {
-            if (userActive) {
-                let pictures = await pictureServices.getPictures(userActive._id); // se obtienen las imagenes del usuario activo
-                if (pictures) {
-                    setUserPics(pictures.data.images);
-                }
-            }
-            setLoadingPics(false);
-        }
         setLoadingPics(true);
         getPics();
+        setLoadingPics(false);
     }, [userActive]);
 
     return (
@@ -97,7 +110,7 @@ const Main = () => {
                     userActive ? <AddPhotoButton user={userActive} /> : <></>
                 }
                 {
-                    loadingPics ? <Loading /> : <PictureList userPictures={userPics} />
+                    loadingPics ? <Loading /> : <PictureList userPictures={userPics} deletePicture={deletePicture} />
                 }
             </article>
         </main>
