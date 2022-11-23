@@ -8,7 +8,7 @@ const UsersList = ({ users = [], cambiarEstado, deleteUser }) => {
     }
 
     return (
-        <div className='mt-[-40px] pb-8'>
+        <div className='mt-[-40px] pb-8 h-screen overflow-scroll scrollbar-hide'>
             {
                 users.map(u => {
                     return <User  key={u._id} user={u}  cambiarEstado={cambiarEstado} deleteUser= {deleteUser}/>

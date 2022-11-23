@@ -6,7 +6,8 @@ import routerPictures from './routes/pictures.js'
 import routerUsers from './routes/users.js'
 import path from 'path';
 import url from 'url';
-import multer from "multer"
+import multer from "multer";
+
 
 if(process.env.NODE_ENV !== 'production'){
     dotenv.config();    // carga el contenido del archivo .env dentro de process.env
@@ -49,8 +50,6 @@ app.use(multer({storage}).single('image')); // single() para indicar uploads de 
                                             // image es el input tipo file del html || La propiedad image del formData o el name del input
 
 
-
-
 //routes
 app.use('/api/pictures', routerPictures);
 
@@ -58,4 +57,5 @@ app.use('/api/users', routerUsers);
 
 
 export default app;
+
 

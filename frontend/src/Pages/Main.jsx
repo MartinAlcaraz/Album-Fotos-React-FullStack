@@ -49,8 +49,7 @@ const Main = () => {
     }
 
     async function deletePicture(public_id) {
-
-        setLoadingPics(true);
+        //setLoadingPics(true);
         const deleted = await pictureServices.deleteOnePicture(userActive._id, public_id);
 
         if (deleted.data.ok) {
@@ -58,7 +57,7 @@ const Main = () => {
         } else {
             alert('No se pudo borrar la imagen.');
         }
-        setLoadingPics(false);
+        //setLoadingPics(false);
     }
 
     // 1° se piden los datos de los usuarios
@@ -112,7 +111,9 @@ const Main = () => {
                 {
                     loadingPics ? <Loading /> : <PictureList userPictures={userPics} deletePicture={deletePicture} />
                 }
+
             </article>
+
         </main>
     )
 }

@@ -1,4 +1,5 @@
 import UserPictures from '../models/UserPictures.js';
+import fs from 'fs';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -49,6 +50,13 @@ picturesCtrl.postPicture = async (req, res) => {
             }
         );
 
+        // se borra la imagen guardada en public/uploads/ --> (req.file)
+        try {
+            fs.unlinkSync(image.path);
+        }catch{
+            console.log('no se pudo borrar la imagen de /uploads')
+        }
+
         // agrega la direccion de la imagen a mongoDB
         let result = await UserPictures.findOne({ userId: userId });
 
@@ -94,6 +102,7 @@ picturesCtrl.postPicture = async (req, res) => {
 picturesCtrl.deleteOnePicture = async (req, res) => {
 
     const userId = await req.params.id;
+
     const public_id = await req.body.img_id;
 
     const result = await UserPictures.findOne({ userId: userId });
@@ -102,6 +111,7 @@ picturesCtrl.deleteOnePicture = async (req, res) => {
     if (result) {
         // se buscar el objeto en el arreglo imagesData que contiene la propiedad public_id 
         // para obtener el id del elemento que se desea borrar
+
         let dataImg = result.imagesData.find((data) => data.public_id == public_id);
 
         cloudinary.uploader.destroy(public_id);
@@ -131,20 +141,21 @@ picturesCtrl.deleteAllPictures = async (req, res) => {
 
     const result = await UserPictures.findOne({ userId: userId });
     // si existe el registro del usuario se buscan las imagenes que se quieren eliminar
-    
+
     if (result) {
-        const userImages = await UserPictures.findOne({ userId: userId});
+        const userImages = await UserPictures.findOne({ userId: userId });
 
         userImages.imagesData.forEach(async (data) => {  // se eliminan todas las imgs de cloudinary
             await cloudinary.uploader.destroy(data.public_id);
         });
 
-        await UserPictures.findOneAndDelete({userId: userId}); // se elimina el usuario de la colleccion de imagenes
+        await UserPictures.findOneAndDelete({ userId: userId }); // se elimina el usuario de la colleccion de imagenes
         res.json({ ok: true });
 
     } else {
         res.json({ ok: false });
     }
 }
+
 
 export default picturesCtrl;

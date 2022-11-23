@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import path from 'path'
+import fs from 'fs';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -9,7 +9,6 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
-
 
 // async function uploadPreset() {
 //     try {
@@ -58,7 +57,7 @@ usersCtrl.postUser = async (req, res) => {
     try {
         const { userName } = await req.body;
         const image = await req.file;
-        //console.log('nombre de usuario: ', userName);
+
         if (userName && image) {
             //subir la imagen a cloudinary
             let cloudResult = await cloudinary.uploader.upload(
@@ -68,6 +67,8 @@ usersCtrl.postUser = async (req, res) => {
                     upload_preset: "user_profile_photo"
                 }
             );
+            // se borra la imagen guardada en public/uploads/ --> (req.file)
+            fs.unlinkSync(image.path);
 
             const newUser = new User({
                 userName,
@@ -76,16 +77,18 @@ usersCtrl.postUser = async (req, res) => {
             })
             const saved = await newUser.save();
 
-            if (saved != undefined || saved != null) {
+            if (saved) {
                 res.json({ message: "User Saved.", saved: true })
             } else {
                 res.json({ message: "User Not Saved.", saved: false })
             }
         } else {
+            fs.unlinkSync(image.path); // se borra la imagen del servidor
             res.json({ message: "userName and image are required.", saved: false })
         }
     } catch (err) {
-        res.json({ message: "Could not save the user.", ok: false })
+        fs.unlinkSync(image.path); // se borra la imagen del servidor
+        res.json({ message: "Error, could not save the user.", saved: false })
         console.log('Error. Could not save')
     }
 }

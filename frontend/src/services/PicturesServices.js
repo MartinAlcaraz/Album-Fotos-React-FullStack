@@ -16,15 +16,11 @@ pictureServices.getPictures = async (userId) => {   // retorna un arreglo de las
     return response;
 }
 
-// pictureServices.getOnePicture = async (userId) => {   // retorna una sola imagen
-//     const response = await axios.get(`${URI}/${userId}`);
-//     const user = await response.data.user;
-//     return user;
-//}
+
 
 pictureServices.deleteOnePicture = async (userId, img_id) => {
 
-    const res = await axios.patch(`${URI}/${userId}`, {data: { img_id : img_id }} );
+    const res = await axios.patch(`${URI}/${userId}`, { img_id : img_id } );
     return res;
 }
 

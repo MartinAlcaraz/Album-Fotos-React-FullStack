@@ -1,9 +1,9 @@
 import Picture from "./Picture";
 
-const CardsList = ({ userPictures = [] , deletePicture}) => {
+const PictureList = ({ userPictures = [] , deletePicture}) => {
 
     return (
-        <div className='mt-[-60px]'>
+        <div className='snap-y flex-col h-screen overflow-scroll scrollbar-hide p-8 mt-[-60px]'>
             {
                 userPictures.map((data, index) => {
                     return <Picture key= {index} url = {data.imgUrl} public_id = {data.public_id} deletePicture={deletePicture}/>
@@ -13,4 +13,4 @@ const CardsList = ({ userPictures = [] , deletePicture}) => {
     )
 }
 
-export default CardsList;
+export default PictureList;

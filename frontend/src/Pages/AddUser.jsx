@@ -16,6 +16,17 @@ const AddUser = () => {
     const [selectedImage, setSelectedImage] = React.useState(addUserIcon);
     const [loadingImg, setLoadingImg] = React.useState(false);
     const [showLoading, setShowLoading] = React.useState(false);
+    const [users, setUsers] = React.useState([]);
+
+    console.log('users main ', users);
+
+    React.useEffect(() => {
+        async function getUsers() {
+            let res = await UserServices.getUsers();
+            setUsers(res);
+        }
+        getUsers();
+    }, []);
 
     const onsubmit = async (data, e) => {
         //const newUser = { userName: data.nombre, image: data.selectedFile[0] };         
@@ -58,11 +69,22 @@ const AddUser = () => {
         inputFile.click();
     }
 
+    function nombreNoExiste(value) {
+        
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].userName.toLowerCase() == value.toLowerCase()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     return (
         <div className='rounded-md bg-primary bg-blue-700/40 p-8 pt-2 m-2'>
-           
+
             {
-                showLoading? <ModalLoading /> : <></>
+                showLoading ? <ModalLoading /> : <></>
             }
 
             <h2 className='mx-auto text-center text-2xl font-semibold'>Crear usuario</h2>
@@ -75,7 +97,10 @@ const AddUser = () => {
                             required: "El nombre es requerido",
                             maxLength: { value: 10, message: "Nombre muy largo." },
                             minLength: { value: 2, message: "Nombre muy corto." },
-                            pattern: { value: /^[A-Za-z]+$/, message: "No se permiten caracteres especiales" }
+                            pattern: { value: /^[A-Za-z]+$/, message: "No se permiten caracteres especiales" },
+                            validate: {
+                                nameExist: (value) => (nombreNoExiste(value)) || "El nombre de usuario ya existe."
+                            }
                         })}
                     />
                     {
@@ -91,7 +116,7 @@ const AddUser = () => {
                         </div>
 
                         <input type='file' name="img" id="selectedFile" className="w-full h-full p-4 basis-1/2 absolute top-0 left-0 opacity-0 cursor-pointer"
-                            accept='*.jpg *.jpeg *.png'
+                            accept="image/jpeg, image/png"
                             {...register("selectedFile", {
                                 required: "Seleccione una imagen de perfil.",
                                 validate: {
