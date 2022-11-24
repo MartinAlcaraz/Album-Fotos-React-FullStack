@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const URI = '/api/pictures';                //  si estamos en un servidor para produccion se deja asi   = '/api/pictures'
-const URI = 'http://localhost:3000/api/pictures';     //  si estamos en desarrollo en el localhost
+const URI = '/api/pictures';                //  si estamos en un servidor para produccion se deja asi   = '/api/pictures'
+//const URI = 'http://localhost:3000/api/pictures';     //  si estamos en desarrollo en el localhost
 //const URI = 'https://album-fotos-backend.herokuapp.com/api/pictures'; // backend en heroku
 
 const pictureServices = {};

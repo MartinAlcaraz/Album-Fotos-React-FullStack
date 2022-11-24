@@ -7,9 +7,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   
-  build: {
-    outDir: path.join( __dirname,'../backend/public')
-  }
+  // build: {
+  //   outDir: path.join( __dirname,'../backend/public')
+  // }
   //base: "/Album-fotos-React/"
 })
 
