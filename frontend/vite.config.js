@@ -6,7 +6,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/Album-fotos-React/"  
+  //base: "/Album-fotos-React/"
   // build: {
   //   outDir: path.join( __dirname,'../backend/public')
   // }
