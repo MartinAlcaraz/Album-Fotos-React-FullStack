@@ -18,7 +18,6 @@ const AddUser = () => {
     const [showLoading, setShowLoading] = React.useState(false);
     const [users, setUsers] = React.useState([]);
 
-    console.log('users main ', users);
 
     React.useEffect(() => {
         async function getUsers() {
@@ -81,7 +80,7 @@ const AddUser = () => {
 
 
     return (
-        <div className='rounded-md bg-primary bg-secondary p-8 pt-2 m-2'>
+        <div className='rounded-md bg-primary bg-secondary md:bg-secondary-md p-8 pt-2 m-2'>
 
             {
                 showLoading ? <ModalLoading /> : <></>

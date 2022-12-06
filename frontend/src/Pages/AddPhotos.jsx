@@ -74,22 +74,22 @@ const AddPhotos = () => {
     }
 
     return (
-        <div className='mx-2 my-2 bg-secondary border-primary'>
+        <div className='m-2 min-h-[80vh] p-10 bg-secondary md:bg-secondary-md border-primary'>
             {
                 showLoading? <ModalLoading /> : <></>
             }
 
-            <h2 className='px-4 mb-1 text-2xl font-semibold text-center '>Agregar foto de <strong>{userInfo?.userName}</strong> <img src={userInfo?.img} className="h-20 inline" /></h2>
-            <form onSubmit={handleSubmit(agregarFoto)} className='h-[65vh] p-4 flex flex-row-reverse'>
+            <h2 className='px-4 leading-4 text-xl md:mb-1 md:text-2xl font-semibold text-center '>Agregar foto de <strong>{userInfo?.userName}</strong> <img src={userInfo?.img} className="h-20 inline" /></h2>
+            <form onSubmit={handleSubmit(agregarFoto)} className='p-4 pt-0 flex flex-col md:flex-row-reverse'>
                 <div className='basis-2/3'>
                     {
                         loadingImg ? <Loading /> :
                             <div className='h-full hover:cursor-pointer' onClick={addImage} >
-                                <img src={selectedImg} className="h-full mx-auto" />
+                                <img src={selectedImg} className="min-h-[40vh] h-full mx-auto" />
                             </div>
                     }
                 </div>
-                <div className='m-auto'>
+                <div className='m-auto basis-1/3'>
                     <input type="file" className='hidden' id="inputFile" accept="image/jpeg, image/png"
                         {...register('inputFile', {
                             required: "Seleccione una imagen.",
