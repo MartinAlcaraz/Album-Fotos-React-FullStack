@@ -1,8 +1,8 @@
 import axios from "axios";
 
-//const URI = '/api/users';                //  si estamos en un servidor para produccion se deja asi   = '/api/users'
-const URI = 'http://localhost:3000/api/users'; // en desarrollo
-//const URI = 'https://album-fotos-backend.herokuapp.com/api/users';
+const URI = '/api/users';                //  si estamos en un servidor para produccion se deja asi   = '/api/users'
+// const URI = 'http://localhost:3000/api/users'; // en desarrollo
+// const URI = 'https://album-fotos-backend-production.up.railway.app/api/users';
 
 const UserServices = {};
 

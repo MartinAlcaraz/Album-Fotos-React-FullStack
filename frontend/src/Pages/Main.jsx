@@ -36,6 +36,7 @@ const Main = () => {
     async function deleteUser(userId) {
         setLoadingPics(true);
         const deleted = await UserServices.deleteUser(userId);
+
         if (deleted.ok) {
             await pictureServices.deleteAllPictures(userId);
             setUserPics([]);
@@ -94,16 +95,16 @@ const Main = () => {
     }, [userActive]);
 
     return (
-        <main className='flex flex-row justify-between m-2 gap-2'>
+        <main className='flex flex-row justify-between m-1 md:m-2 gap-1 md:gap-2'>
 
-            <aside className='border-primary bg-secondary basis-1/4 min-h-[80vh]'>
+            <aside className='border-primary bg-secondary basis-1/4 h-[90vh]'>
                 <AddUserButton />
                 {
                     loadingUsers ? <Loading /> : <UsersList users={dataUsers} cambiarEstado={cambiarEstado} deleteUser={deleteUser} />
                 }
             </aside>
 
-            <article className='border-primary bg-secondary basis-3/4'>
+            <article className='border-primary bg-secondary basis-3/4 h-[90vh]'>
                 {
                     // si hay un usuario seleccionado se muestra el boton de agregar imagen
                     userActive ? <AddPhotoButton user={userActive} /> : <></>

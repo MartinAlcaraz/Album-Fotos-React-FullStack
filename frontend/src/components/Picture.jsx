@@ -10,11 +10,11 @@ const Picture = ({ url, public_id, deletePicture }) => {
     }
 
     return (
-        <div className="m-2 h-72 snap-center shrink-0 mx-8">
+        <div className="my-2 md:my-8 md:mx-4 h-56 md:h-72 snap-center shrink-0">
             {
                 modalView? <ModalView url = {url} setModalView={setModalView} deletePicture={deletePicture} public_id={public_id}/> : <></>
             }
-            <img onClick={imgOnClick} className="h-full max-w-[90%] mx-auto object-contain cursor-pointer" src={url} />
+            <img onClick={imgOnClick} className="h-full w-full md:max-w-[90%] mx-auto object-contain cursor-pointer" src={url} />
         </div>
     )
 }

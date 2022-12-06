@@ -81,7 +81,7 @@ const AddUser = () => {
 
 
     return (
-        <div className='rounded-md bg-primary bg-blue-700/40 p-8 pt-2 m-2'>
+        <div className='rounded-md bg-primary bg-secondary p-8 pt-2 m-2'>
 
             {
                 showLoading ? <ModalLoading /> : <></>

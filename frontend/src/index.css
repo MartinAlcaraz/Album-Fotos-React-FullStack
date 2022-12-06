@@ -4,10 +4,10 @@
 
 @layer components{
     .bg-primary{
-        @apply bg-blue-700;
+        @apply bg-blue-500;
     }
     .bg-secondary{
-      @apply bg-blue-800/50;
+      @apply bg-blue-600/50;
     }
     .border-primary{
         @apply border-2 border-gray-700 rounded-md;
@@ -18,7 +18,22 @@
     .button-secondary{
       @apply px-4 m-2 py-2 rounded-md text-xl font-semibold boton-transparente cursor-pointer;
     }
+
 }
+
+.spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .animacion-in{
   animation-name: zoom-in;

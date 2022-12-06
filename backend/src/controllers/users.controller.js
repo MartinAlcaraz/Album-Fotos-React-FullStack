@@ -68,11 +68,11 @@ usersCtrl.postUser = async (req, res) => {
                 }
             );
             // se borra la imagen guardada en public/uploads/ --> (req.file)
-            fs.unlinkSync(image.path);
+            //fs.unlinkSync(image.path);
 
             const newUser = new User({
                 userName,
-                imageUrl: cloudResult.url,
+                imageUrl: cloudResult.secure_url,
                 public_id: cloudResult.public_id
             })
             const saved = await newUser.save();
@@ -83,11 +83,9 @@ usersCtrl.postUser = async (req, res) => {
                 res.json({ message: "User Not Saved.", saved: false })
             }
         } else {
-            fs.unlinkSync(image.path); // se borra la imagen del servidor
             res.json({ message: "userName and image are required.", saved: false })
         }
     } catch (err) {
-        fs.unlinkSync(image.path); // se borra la imagen del servidor
         res.json({ message: "Error, could not save the user.", saved: false })
         console.log('Error. Could not save')
     }
@@ -96,7 +94,6 @@ usersCtrl.postUser = async (req, res) => {
 usersCtrl.deleteUser = async (req, res) => {
     try {
         const result = await User.findByIdAndDelete(req.params.id);
-
         cloudinary.uploader.destroy(result.public_id); // pulblic_id es el id de la img de cloudinary
 
         if (result) {

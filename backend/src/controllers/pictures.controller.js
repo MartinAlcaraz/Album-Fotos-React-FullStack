@@ -56,6 +56,7 @@ picturesCtrl.postPicture = async (req, res) => {
         }catch{
             console.log('no se pudo borrar la imagen de /uploads')
         }
+        
 
         // agrega la direccion de la imagen a mongoDB
         let result = await UserPictures.findOne({ userId: userId });
@@ -63,7 +64,7 @@ picturesCtrl.postPicture = async (req, res) => {
         if (result == null) { // se crea un nuevo registro 
 
             const newUserPicture = new UserPictures(
-                { userId: userId, imagesData: [{ public_id: cloudResult.public_id, imgUrl: cloudResult.url }] }
+                { userId: userId, imagesData: [{ public_id: cloudResult.public_id, imgUrl: cloudResult.secure_url }] }
             );
             newUserPicture.save(function (err, data) {
                 if (err) {
@@ -82,7 +83,7 @@ picturesCtrl.postPicture = async (req, res) => {
                     '$push': {
                         imagesData: {
                             public_id: cloudResult.public_id,
-                            imgUrl: cloudResult.url
+                            imgUrl: cloudResult.secure_url
                         }
                     }
                 }    // agreaga una url al array imgUrl []

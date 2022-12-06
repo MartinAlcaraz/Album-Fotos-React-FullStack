@@ -8,12 +8,13 @@ const UsersList = ({ users = [], cambiarEstado, deleteUser }) => {
     }
 
     return (
-        <div className='mt-[-40px] pb-8 h-screen overflow-scroll scrollbar-hide'>
+        <div className='mt-[-70px] snap-y flex-col h-full overflow-scroll scrollbar-hide'>
             {
                 users.map(u => {
                     return <User  key={u._id} user={u}  cambiarEstado={cambiarEstado} deleteUser= {deleteUser}/>
                 })
             }
+            <div className='h-16'></div>
         </div>
     )
 }
