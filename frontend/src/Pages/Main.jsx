@@ -90,6 +90,7 @@ const Main = () => {
     // actualiza las imagenes. cuando se actualiza el usuario activo se obtienen las url de las imagenes
     useEffect(() => {
         setLoadingPics(true);
+        setUserPics([]);
         getPics();
         setLoadingPics(false);
     }, [userActive]);
@@ -100,7 +101,7 @@ const Main = () => {
             <aside className='border-primary bg-secondary md:bg-secondary-md basis-1/4 h-[90vh]'>
                 <AddUserButton />
                 {
-                    loadingUsers ? <Loading /> : <UsersList users={dataUsers} cambiarEstado={cambiarEstado} deleteUser={deleteUser} />
+                    loadingUsers ? <Loading small={true}/> : <UsersList users={dataUsers} cambiarEstado={cambiarEstado} deleteUser={deleteUser} />
                 }
             </aside>
 

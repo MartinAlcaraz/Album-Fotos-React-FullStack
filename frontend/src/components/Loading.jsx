@@ -1,7 +1,11 @@
 
-const Loading = () => {
+const Loading = ({ small= false }) => {
+    let loaderClass="loader";
+    if (small){
+        loaderClass += " loader-sm";
+    } 
     return(
-        <div className="loader w-4 h-4">Loading...</div>
+        <div className={loaderClass} >Loading...</div>
     )
 }
 

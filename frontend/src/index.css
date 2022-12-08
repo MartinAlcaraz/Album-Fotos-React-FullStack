@@ -108,9 +108,9 @@ body {
 
 .loader {
   margin: 100px auto;
-  font-size: 25px;
-  width: 1em;
-  height: 1em;
+  font-size: 20px;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   position: relative;
   text-indent: -9999em;
@@ -119,6 +119,10 @@ body {
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
+}
+
+.loader-sm{
+  font-size: 10px;
 }
 
 @-webkit-keyframes load5 {
