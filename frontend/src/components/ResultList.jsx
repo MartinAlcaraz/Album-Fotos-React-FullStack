@@ -5,9 +5,13 @@ const ResultList = ({ users, text, setInputValue }) => {
     const onClick = (e)=> {
         setInputValue(e.target.innerHTML);
     }
+    
+    if(text == ""){
+        return <></>
+    }
 
     return (
-        <ul className="absolute z-10 bg-blue-400/50 rounded-md">
+        <ul className="absolute z-10 bg-blue-400/50 rounded-md" >
             {
                 users.map((u, index) => {
                     if (u.userName.toLowerCase().includes(text.toLowerCase())) {

@@ -7,10 +7,10 @@ export const UserContext = createContext();  // nombre del contexto  // TaskCont
 
 export function UserContextProvider(props) {    // componente que contiene el contexto
 
-    const [users, setUsers] = useState([]);         // se crea la variable de estado global como tasks = []
+    const [dataUsers, setDataUsers] = useState([]);         // se crea la variable de estado global como tasks = []
 
     useEffect(async () => {		
-        setUsers( await UserServices.getUsers() );
+        setDataUsers( await UserServices.getUsers() );
     }, []);
 
     // function createTask(tarea) {		// recibe  el objeto tarea desde taskForm
@@ -28,7 +28,7 @@ export function UserContextProvider(props) {    // componente que contiene el co
     // }
 
     return (
-        <UserContext.Provider value={{users}}> 
+        <UserContext.Provider value={{dataUsers}}> 
             {props.children}
         </UserContext.Provider>
     )
